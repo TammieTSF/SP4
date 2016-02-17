@@ -18,7 +18,7 @@
     <ClCompile Include="Source\GameStateManager.cpp" />
     <ClCompile Include="Source\Goodies.cpp" />
     <ClCompile Include="Source\GoodiesFactory.cpp" />
-    <ClCompile Include="Source\IntroState.cpp" />
+    <ClCompile Include="Source\HighscoreState.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Minimap.cpp" />
+    <ClCompile Include="Source\OptionState.cpp" />
     <ClCompile Include="Source\PlayerInfo.cpp" />
     <ClCompile Include="Source\PlayInfo3PV.cpp" />
     <ClCompile Include="Source\PlayState.cpp" />
@@ -48,7 +49,7 @@
     <ClInclude Include="Source\Geometry.h" />
     <ClInclude Include="Source\Goodies.h" />
     <ClInclude Include="Source\GoodiesFactory.h" />
-    <ClInclude Include="Source\IntroState.h" />
+    <ClInclude Include="Source\HighscoreState.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
@@ -58,6 +59,7 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Minimap.h" />
+    <ClInclude Include="Source\OptionState.h" />
     <ClInclude Include="Source\PlayerInfo.h" />
     <ClInclude Include="Source\PlayInfo3PV.h" />
     <ClInclude Include="Source\PlayState.h" />

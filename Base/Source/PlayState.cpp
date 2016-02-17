@@ -139,8 +139,8 @@ void CPlayState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	//	}
 	//} while (m_iUserChoice == -1);
 #endif
-	if (button_Left == true)
-		scene->UpdateWeaponStatus(scene->WA_FIRE);
+	//if (button_Left == true)
+		//scene->UpdateWeaponStatus(scene->WA_FIRE);
 	/*else if (button_Right == true)
 		scene->UpdateWeaponStatus(scene->WA_FIRE_SECONDARY);*/
 }

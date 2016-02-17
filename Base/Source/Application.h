@@ -4,6 +4,7 @@
 #include "timer.h"
 #include "GameStateManager.h"
 #include "playstate.h"
+#include "menustate.h"
 
 class Application
 {

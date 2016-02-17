@@ -10,50 +10,21 @@
 #include "Strategy_Kill.h"
 
 CSceneManager2D::CSceneManager2D()
-/*
-: m_cMinimap(NULL)
-, m_cMap(NULL)
-, tileOffset_x(0)
-, tileOffset_y(0)
-, m_cRearMap(NULL)
-, rearWallOffset_x(0)
-, rearWallOffset_y(0)
-, rearWallTileOffset_x(0)
-, rearWallTileOffset_y(0)
-, rearWallFineOffset_x(0)
-, rearWallFineOffset_y(0)
-, theEnemy(NULL)
-*/
+	: PlaySelect(true)
+	, HighscoreSelect(false)
+	, OptionSelect(false)
+	, ExitSelect(false)
 {
+}
+
+CSceneManager2D::CSceneManager2D(const int m_window_width, const int m_window_height)
+{
+	this->m_window_width = m_window_width;
+	this->m_window_height = m_window_height;
 }
 
 CSceneManager2D::~CSceneManager2D()
 {
-	/*
-	for (int i=0; i<10; i++)
-	{
-	delete theArrayOfGoodies[i];
-	}
-	delete theArrayOfGoodies;
-
-	if (theEnemy)
-	{
-	delete theEnemy;
-	theEnemy = NULL;
-	}
-
-	if (m_cMap)
-	{
-	delete m_cMap;
-	m_cMap = NULL;
-	}
-
-	if (m_cMinimap)
-	{
-	delete m_cMinimap;
-	m_cMinimap = NULL;
-	}
-	*/
 }
 
 void CSceneManager2D::Init()
@@ -111,68 +82,15 @@ void CSceneManager2D::Init()
 	// Load the ground mesh and texture
 	meshList[GEO_BACKGROUND] = MeshBuilder::Generate2DMesh("GEO_BACKGROUND", Color(1, 1, 1), 0, 0, 800, 600);
 	meshList[GEO_BACKGROUND]->textureID = LoadTGA("Image//sky_background.tga");
-	meshList[GEO_TILEGROUND] = MeshBuilder::Generate2DMesh("GEO_TILEGROUND", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILEGROUND]->textureID = LoadTGA("Image//tile1_ground.tga");
-	meshList[GEO_TILEHERO] = MeshBuilder::Generate2DMesh("GEO_TILEHERO", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILEHERO]->textureID = LoadTGA("Image//tile2_hero.tga");
-	meshList[GEO_TILETREE] = MeshBuilder::Generate2DMesh("GEO_TILETREE", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILETREE]->textureID = LoadTGA("Image//tile3_tree.tga");
-	meshList[GEO_TILESTRUCTURE] = MeshBuilder::Generate2DMesh("GEO_TILESTRUCTURE", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILESTRUCTURE]->textureID = LoadTGA("Image//tile3_structure.tga");
-	meshList[GEO_TILEHERO_FRAME0] = MeshBuilder::Generate2DMesh("GEO_TILEHERO_FRAME0", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILEHERO_FRAME0]->textureID = LoadTGA("Image//tile2_hero_frame_0.tga");
-	meshList[GEO_TILEHERO_FRAME1] = MeshBuilder::Generate2DMesh("GEO_TILEHERO_FRAME1", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILEHERO_FRAME1]->textureID = LoadTGA("Image//tile2_hero_frame_1.tga");
-	meshList[GEO_TILEHERO_FRAME2] = MeshBuilder::Generate2DMesh("GEO_TILEHERO_FRAME2", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILEHERO_FRAME2]->textureID = LoadTGA("Image//tile2_hero_frame_2.tga");
-	meshList[GEO_TILEHERO_FRAME3] = MeshBuilder::Generate2DMesh("GEO_TILEHERO_FRAME3", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILEHERO_FRAME3]->textureID = LoadTGA("Image//tile2_hero_frame_3.tga");
+	
+	meshList[GEO_MENU] = MeshBuilder::Generate2DMesh("GEO_MENU", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_MENU]->textureID = LoadTGA("Image//MainMenu.tga");
 
-	meshList[GEO_TILE_KILLZONE] = MeshBuilder::Generate2DMesh("GEO_TILE_KILLZONE", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILE_KILLZONE]->textureID = LoadTGA("Image//tile10_killzone.tga");
-	meshList[GEO_TILE_SAFEZONE] = MeshBuilder::Generate2DMesh("GEO_TILE_SAFEZONE", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILE_SAFEZONE]->textureID = LoadTGA("Image//tile11_safezone.tga");
-	meshList[GEO_TILEENEMY_FRAME0] = MeshBuilder::Generate2DMesh("GEO_TILEENEMY_FRAME0", Color(1, 1, 1), 0, 0, 25, 25);
-	meshList[GEO_TILEENEMY_FRAME0]->textureID = LoadTGA("Image//tile20_enemy.tga");
+	meshList[GEO_SELECT] = MeshBuilder::Generate2DMesh("GEO_SELECT", Color(1, 1, 1), 0, 0, 75, 55);
+	meshList[GEO_SELECT]->textureID = LoadTGA("Image//Select.tga");
 
-	/*
-	// Initialise and load the tile map
-	m_cMap = new CMap();
-	m_cMap->Init( 600, 800, 24, 32, 600, 1600 );
-	m_cMap->LoadMap( "Image//MapDesign.csv" );
+	// Do Options Here
 
-	// Initialise and load the REAR tile map
-	m_cRearMap = new CMap();
-	m_cRearMap->Init( 600, 800, 24, 32, 600, 1600 );
-	m_cRearMap->LoadMap( "Image//MapDesign_Rear.csv" );
-
-	// Initialise the hero's position
-	theHero = new CPlayerInfo();
-	theHero->SetPos_x(50);
-	theHero->SetPos_y(100);
-
-	// Load the texture for minimap
-	m_cMinimap = new CMinimap();
-	m_cMinimap->SetBackground(MeshBuilder::GenerateMinimap("MINIMAP", Color(1, 1, 1), 1.f));
-	m_cMinimap->GetBackground()->textureID = LoadTGA("Image//grass_darkgreen.tga");
-	m_cMinimap->SetBorder( MeshBuilder::GenerateMinimapBorder("MINIMAPBORDER", Color(1, 1, 0), 1.f) );
-	m_cMinimap->SetAvatar( MeshBuilder::GenerateMinimapAvatar("MINIMAPAVATAR", Color(1, 1, 0), 1.f) );
-
-	// Set the strategy for the enemy
-	theEnemy = new CEnemy();
-	theEnemy->ChangeStrategy( NULL, false);
-	theEnemy->SetPos_x(575);
-	theEnemy->SetPos_y(100);
-
-	theArrayOfGoodies = new CGoodies*[10];
-	for (int i=0; i<10; i++)
-	{
-		theArrayOfGoodies[i] = theGoodiesFactory.Create( TREASURECHEST );
-		theArrayOfGoodies[i]->SetPos( 150 + i*25, 150 );
-		theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1, 1, 1), 0, 0, 25, 25));
-		theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//tile4_treasurechest.tga"));
-	}
-	*/
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 1000 units
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
@@ -256,10 +174,7 @@ void CSceneManager2D::UpdateCameraStatus(const unsigned char key, const bool sta
  ********************************************************************************/
 void CSceneManager2D::UpdateWeaponStatus(const unsigned char key)
 {
-	if (key == WA_FIRE)
-	{
-		// Add a bullet object which starts at the camera position and moves in the camera's direction
-	}
+	
 }
 
 /********************************************************************************
@@ -404,6 +319,38 @@ void CSceneManager2D::Render()
 	ss.precision(5);
 	ss << "test text: " << " 9999999 ";
 	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
+}
+
+void CSceneManager2D::RenderMainMenu()
+{
+	modelStack.PushMatrix();
+	Render2DMesh(meshList[GEO_MENU], false);
+	modelStack.PopMatrix();
+
+	if (PlaySelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 250, 255);
+		modelStack.PopMatrix();
+	}
+	else if (HighscoreSelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 170, 185);
+		modelStack.PopMatrix();
+	}
+	else if (OptionSelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 210, 110);
+		modelStack.PopMatrix();
+	}
+	else if (ExitSelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 260, 30);
+		modelStack.PopMatrix();
+	}
 }
 
 /********************************************************************************

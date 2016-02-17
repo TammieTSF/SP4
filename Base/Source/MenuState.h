@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gamestate.h"
+#include "application.h"
 
 class CMenuState : public CGameState
 {
@@ -29,4 +30,6 @@ protected:
 
 private:
 	static CMenuState theMenuState;
+	CSceneManager2D* theScene;
+	int Select;
 };

@@ -36,25 +36,21 @@ class CSceneManager2D : public Scene
 	{
 		GEO_AXES,
 		GEO_BACKGROUND,
-		GEO_TILEGROUND,
-		GEO_TILEHERO,
-		GEO_TILETREE,
-		GEO_TILESTRUCTURE,
-		GEO_TILEHERO_FRAME0,
-		GEO_TILEHERO_FRAME1,
-		GEO_TILEHERO_FRAME2,
-		GEO_TILEHERO_FRAME3,
-		GEO_TILE_KILLZONE,
-		GEO_TILE_SAFEZONE,
-		GEO_TILEENEMY_FRAME0,
-		GEO_TILE_TREASURECHEST,
-		GEO_OBJECT,
+		GEO_MENU,
+		GEO_SELECT,
+		GEO_HIGHSCORE,
+		// TEMPO NAME
+		GEO_OPTION1,
+		GEO_OPTION2,
+		GEO_OPTION3,
+		GEO_OPTION4,
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
 
 public:
 	CSceneManager2D();
+	CSceneManager2D(const int m_window_width, const int m_window_height);
 	~CSceneManager2D();
 
 	virtual void Init();
@@ -68,16 +64,16 @@ public:
 
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderBackground();
+	void RenderMainMenu();
+	void RenderHighscore();
+	void RenderOption();
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const int size=1, const int x=0, const int y=0, const bool rotate=false, const bool flip=false);
 
-	enum WEAPON_ACTION
-	{
-		WA_NIL = 0,
-		WA_FIRE,
-		WA_RELOAD,
-		WA_CHANGEWEAPON,
-		WA_TOTAL,
-	};
+	// Menu States
+	bool PlaySelect;
+	bool HighscoreSelect;
+	bool OptionSelect;
+	bool ExitSelect;
 
 private:
 	unsigned m_vertexArrayID;
@@ -95,34 +91,11 @@ private:
 
 
 	float fps;
-	/*
-	// Handle to the minimap
-	CMinimap* m_cMinimap;
 
-	// Handle to the tilemaps
-	CMap* m_cMap;
-	void RenderTileMap();
-	// Hero's information
-	CPlayerInfo* theHero;
+	// Window size
+	int m_window_width;
+	int m_window_height;
 
-	// Codes for Scrolling
-	int tileOffset_x, tileOffset_y;
-
-	// Codes for Parallax Scrolling
-	CMap* m_cRearMap;
-	void RenderRearTileMap();
-	int rearWallOffset_x, rearWallOffset_y;
-	int rearWallTileOffset_x, rearWallTileOffset_y;
-	int rearWallFineOffset_x, rearWallFineOffset_y;
-
-	// Enemies
-	CEnemy* theEnemy;
-
-	// Goodies and Goodies Factory
-	CGoodiesFactory theGoodiesFactory;
-	CGoodies** theArrayOfGoodies;
-	void RenderGoodies(void);
-	*/
 };
 
 #endif
