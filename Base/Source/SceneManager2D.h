@@ -21,10 +21,6 @@
 #include "Goodies.h"
 #include "TreasureChest.h"
 
-//grid system and grid class
-#include "GridSystem.h"
-
-
 class CSceneManager2D : public Scene
 {
 	enum UNIFORM_TYPE
@@ -78,8 +74,6 @@ public:
 	void RenderBackground();
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const int size=1, const int x=0, const int y=0, const bool rotate=false, const bool flip=false);
 
-	void RenderGridSystem();
-
 	enum WEAPON_ACTION
 	{
 		WA_NIL = 0,
@@ -110,10 +104,6 @@ private:
 
 
 	float fps;
-
-	//grid system and grids
-	GridSystem* Playfield;
-
 	/*
 	// Handle to the minimap
 	CMinimap* m_cMinimap;
