@@ -192,7 +192,8 @@ bool Application::GetKeyboardUpdate()
  Constructor
  ********************************************************************************/
 Application::Application()
-	: theGSM(NULL)
+	: theGSM(NULL),
+	theAppLua(NULL)
 {
 }
 
@@ -201,11 +202,17 @@ Application::Application()
  ********************************************************************************/
 Application::~Application()
 {
+	if (theAppLua)
+	{
+		delete theAppLua;
+		theAppLua = NULL;
+	}
 	if (theGSM)
 	{
 		delete theGSM;
 		theGSM = NULL;
 	}
+	_CrtDumpMemoryLeaks();
 }
 
 /********************************************************************************
@@ -230,6 +237,11 @@ void Application::Init()
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 
+	theAppLua = new LuaUsage();
+	theAppLua->LuaUsageInit("Application.Lua");
+	m_window_height = theAppLua->GetIntegerValue("SCREENHEIGHT");
+	m_window_width = theAppLua->GetIntegerValue("SCREENWIDTH");
+	theAppLua->LuaUsageClose();
 
 	//Create a window and create its OpenGL context
 	m_window = glfwCreateWindow(m_window_width, m_window_height, "Y2S2_Framework", NULL, NULL);
@@ -267,10 +279,10 @@ void Application::Init()
 	m_dElapsedTime = 0.0;
 	m_dAccumulatedTime_ThreadOne = 0.0;
 	m_dAccumulatedTime_ThreadTwo = 0.0;
-
+	
 	// Initialise the GSM
 	theGSM = new CGameStateManager();
-	theGSM->Init( "DM2240 with Game State Management", 800, 600 );
+	theGSM->Init("DM2240 with Game State Management", m_window_width, m_window_height);
 	theGSM->ChangeState( CPlayState::Instance() );
 }
 
@@ -327,6 +339,5 @@ void Application::Exit()
 	//Finalize and clean up GLFW
 	glfwTerminate();
 
-	std::cout << _CrtDumpMemoryLeaks();
 	//std::cout << _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 }

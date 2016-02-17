@@ -12,6 +12,9 @@
 #include "Vector2.h"
 #include "PlayerInfo.h"
 #include "Enemy.h"
+#include "Player.h"
+#include "Save.h"
+#include "SpriteAnimation.h"
 
 // Goodies and Goodies Factory
 #include "GoodiesFactory.h"
@@ -48,6 +51,7 @@ class CSceneManager2D : public Scene
 		GEO_TILE_SAFEZONE,
 		GEO_TILEENEMY_FRAME0,
 		GEO_TILE_TREASURECHEST,
+		GEO_SPRITE_ANIMATION,
 		GEO_OBJECT,
 		GEO_TEXT,
 		NUM_GEOMETRY,
@@ -80,6 +84,11 @@ public:
 	};
 
 private:
+	Player* m_player;
+	Save* m_save;
+	SpriteAnimation *m_spriteAnimation;
+
+
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
 	unsigned m_programID;
