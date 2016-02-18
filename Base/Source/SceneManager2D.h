@@ -12,11 +12,18 @@
 #include "Vector2.h"
 #include "PlayerInfo.h"
 #include "Enemy.h"
+#include "Player.h"
+#include "Save.h"
+#include "SpriteAnimation.h"
 
 // Goodies and Goodies Factory
 #include "GoodiesFactory.h"
 #include "Goodies.h"
 #include "TreasureChest.h"
+
+//grid system and grid class
+#include "GridSystem.h"
+
 
 class CSceneManager2D : public Scene
 {
@@ -48,6 +55,7 @@ class CSceneManager2D : public Scene
 		GEO_TILE_SAFEZONE,
 		GEO_TILEENEMY_FRAME0,
 		GEO_TILE_TREASURECHEST,
+		GEO_SPRITE_ANIMATION,
 		GEO_OBJECT,
 		GEO_TEXT,
 		NUM_GEOMETRY,
@@ -70,6 +78,8 @@ public:
 	void RenderBackground();
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const int size=1, const int x=0, const int y=0, const bool rotate=false, const bool flip=false);
 
+	void RenderGridSystem();
+
 	enum WEAPON_ACTION
 	{
 		WA_NIL = 0,
@@ -80,6 +90,11 @@ public:
 	};
 
 private:
+	Player* m_player;
+	Save* m_save;
+	SpriteAnimation *m_spriteAnimation;
+
+
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
 	unsigned m_programID;
@@ -95,6 +110,10 @@ private:
 
 
 	float fps;
+
+	//grid system and grids
+	GridSystem* Playfield;
+
 	/*
 	// Handle to the minimap
 	CMinimap* m_cMinimap;

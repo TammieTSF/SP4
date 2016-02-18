@@ -4,6 +4,7 @@
 #include "timer.h"
 #include "GameStateManager.h"
 #include "playstate.h"
+#include "LuaUsage.h"
 
 class Application
 {
@@ -33,8 +34,10 @@ private:
 
 	// Declare the window width and height as constant integer
 	const static int m_window_deadzone = 100;
-	const static int m_window_width = 800;
-	const static int m_window_height = 600;
+	int m_window_width;
+	int m_window_height;
+	//const static int m_window_width = 800;
+	//const static int m_window_height = 600;
 	//Declare a window object
 	StopWatch m_timer;
 	double m_dElapsedTime;
@@ -43,6 +46,7 @@ private:
 
 	// Game State Management
 	CGameStateManager* theGSM;
+	LuaUsage* theAppLua;
 };
 
 #endif

@@ -10,6 +10,10 @@
 #include "Strategy_Kill.h"
 
 CSceneManager2D::CSceneManager2D()
+: m_player(NULL)
+, m_save(NULL)
+, m_spriteAnimation(NULL)
+, Playfield(NULL)
 /*
 : m_cMinimap(NULL)
 , m_cMap(NULL)
@@ -29,6 +33,25 @@ CSceneManager2D::CSceneManager2D()
 
 CSceneManager2D::~CSceneManager2D()
 {
+	if (m_player)
+	{
+		delete m_player;
+		m_player = NULL;
+	}
+	
+	if (m_save)
+	{
+		delete m_save;
+		m_save = NULL;
+	}
+
+
+	/*
+	if (m_spriteAnimation)
+	{
+		delete m_spriteAnimation;
+		m_spriteAnimation = NULL;
+	}*/
 	/*
 	for (int i=0; i<10; i++)
 	{
@@ -135,6 +158,14 @@ void CSceneManager2D::Init()
 	meshList[GEO_TILEENEMY_FRAME0] = MeshBuilder::Generate2DMesh("GEO_TILEENEMY_FRAME0", Color(1, 1, 1), 0, 0, 25, 25);
 	meshList[GEO_TILEENEMY_FRAME0]->textureID = LoadTGA("Image//tile20_enemy.tga");
 
+	meshList[GEO_SPRITE_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("cat", 1, 6);
+	meshList[GEO_SPRITE_ANIMATION]->textureID = LoadTGA("Image//cat.tga");
+	m_spriteAnimation = dynamic_cast<SpriteAnimation*>(meshList[GEO_SPRITE_ANIMATION]);
+	if (m_spriteAnimation)
+	{
+		m_spriteAnimation->m_anim = new Animation();
+		m_spriteAnimation->m_anim->Set(0, 5, 0, 0.1f);
+	}
 	/*
 	// Initialise and load the tile map
 	m_cMap = new CMap();
@@ -180,10 +211,21 @@ void CSceneManager2D::Init()
 	projectionStack.LoadMatrix(perspective);
 	
 	rotateAngle = 0;
+	m_save = new Save();
+	m_player = new Player();
+	m_player->PlayerInit("Player.lua");
+
+	//initailise grid system
+	Playfield = new GridSystem();
+	// in this order: position of the whole grid system, size of grid x, size of grid y, number of grid x, number of grid y 
+	Playfield->Init(Vector3(400, 300, 0), 25.f, 25.f, 15, 15);
+
+	
 }
 
 void CSceneManager2D::Update(double dt)
 {
+	//cout << m_player->GetAmtOfClearedLevelEasy() << " " << m_player->GetAmtOfClearedLevelNormal() << " " << m_player->GetAmtOfClearedLevelHard();
 	if(Application::IsKeyPressed('1'))
 		glEnable(GL_CULL_FACE);
 	if(Application::IsKeyPressed('2'))
@@ -196,6 +238,7 @@ void CSceneManager2D::Update(double dt)
 	rotateAngle -= (float)Application::camera_yaw;// += (float)(10 * dt);
 
 	camera.Update(dt);
+	m_spriteAnimation->Update(dt);
 	/*
 
 	// Update the hero
@@ -356,6 +399,23 @@ void CSceneManager2D::RenderBackground()
 	Render2DMesh(meshList[GEO_BACKGROUND], false, 1);
 }
 
+void CSceneManager2D::RenderGridSystem()
+{
+
+	for (int a = 0; a < Playfield->GetGridsVec().size(); a++)
+	{
+		modelStack.PushMatrix();
+		//get position of a grid in the vector 
+		Vector3 GridPos = Playfield->GetGridsVec()[a]->GetPos();
+
+		Render2DMesh(meshList[GEO_TILESTRUCTURE], false, 1, GridPos.x, GridPos.y);
+		//cout << "rendered at" << Playfield->GetGridsVec()[a]->GetPos().x << ", " << Playfield->GetGridsVec()[a]->GetPos().y << endl;
+		modelStack.PopMatrix();
+	}
+
+
+}
+
 /********************************************************************************
  Render this scene
  ********************************************************************************/
@@ -377,6 +437,9 @@ void CSceneManager2D::Render()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack.LoadIdentity();
 
+	modelStack.PushMatrix();
+	Render2DMesh(meshList[GEO_SPRITE_ANIMATION], false,50,400,300);
+	modelStack.PopMatrix();
 	/*
 	// Render the background image
 	RenderBackground();
@@ -387,6 +450,9 @@ void CSceneManager2D::Render()
 	// Render the goodies
 	RenderGoodies();
 	*/
+
+	//render the grid system and the corresponding image for the each grid
+	RenderGridSystem();
 
 	//On screen text
 	/*
@@ -411,6 +477,12 @@ void CSceneManager2D::Render()
  ********************************************************************************/
 void CSceneManager2D::Exit()
 {
+	m_save->SavePlayer(m_player);
+	if (m_spriteAnimation)
+	{
+		delete m_spriteAnimation->m_anim;
+		m_spriteAnimation->m_anim = NULL;
+	}
 	// Cleanup VBO
 	for(int i = 0; i < NUM_GEOMETRY; ++i)
 	{
@@ -419,6 +491,7 @@ void CSceneManager2D::Exit()
 	}
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);
+	
 }
 
 
