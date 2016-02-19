@@ -31,6 +31,12 @@ CSceneManager2D::CSceneManager2D()
 {
 }
 
+CSceneManager2D::CSceneManager2D(const int m_window_width, const int m_window_height)
+{
+	this->m_windowWidth = m_window_width;
+	this->m_windowHeight = m_window_height;
+}
+
 CSceneManager2D::~CSceneManager2D()
 {
 	if (m_player)
@@ -164,6 +170,20 @@ void CSceneManager2D::Init()
 	meshList[GEO_TILEENEMY_FRAME0] = MeshBuilder::Generate2DMesh("GEO_TILEENEMY_FRAME0", Color(1, 1, 1), 0, 0, 25, 25);
 	meshList[GEO_TILEENEMY_FRAME0]->textureID = LoadTGA("Image//tile20_enemy.tga");
 
+	meshList[GEO_MENU] = MeshBuilder::Generate2DMesh("GEO_MENU", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_MENU]->textureID = LoadTGA("Image//MainMenu.tga");
+	meshList[GEO_HIGHSCORE] = MeshBuilder::Generate2DMesh("GEO_HIGHSCORE", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_HIGHSCORE]->textureID = LoadTGA("Image//Highscore.tga");
+	meshList[GEO_OPTION1] = MeshBuilder::Generate2DMesh("GEO_OPTION1", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_OPTION1]->textureID = LoadTGA("Image//OptionsSoundOn.tga");
+	meshList[GEO_INSTRUCTION] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTIONS", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_INSTRUCTION]->textureID = LoadTGA("Image//Instructions.tga");
+
+
+	meshList[GEO_SELECT] = MeshBuilder::Generate2DMesh("GEO_SELECT", Color(1, 1, 1), 0, 0, 75, 55);
+	meshList[GEO_SELECT]->textureID = LoadTGA("Image//Select.tga");
+
+
 	meshList[GEO_SPRITE_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("cat", 1, 6);
 	meshList[GEO_SPRITE_ANIMATION]->textureID = LoadTGA("Image//cat.tga");
 	m_spriteAnimation = dynamic_cast<SpriteAnimation*>(meshList[GEO_SPRITE_ANIMATION]);
@@ -226,7 +246,17 @@ void CSceneManager2D::Init()
 	// in this order: position of the whole grid system, size of grid x, size of grid y, number of grid x, number of grid y 
 	Playfield->Init(Vector3(400, 300, 0), 25.f, 25.f, 5, 5);
 
-	
+	AddHighscore();
+}
+
+void CSceneManager2D::AddHighscore()
+{
+	const int MAX_SCORES = 5;
+	string values[MAX_SCORES];
+	for (int i = 0; i < MAX_SCORES; i++)
+	{
+		theScore[i].ReadTextFile("highscore.txt");
+	}
 }
 
 void CSceneManager2D::Update(double dt)
@@ -485,6 +515,75 @@ void CSceneManager2D::Render()
 	ss.precision(5);
 	ss << "test text: " << " 9999999 ";
 	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
+}
+
+
+void CSceneManager2D::RenderMainMenu()
+{
+	modelStack.PushMatrix();
+	Render2DMesh(meshList[GEO_MENU], false);
+	modelStack.PopMatrix();
+
+	if (PlaySelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 250, 275);
+		modelStack.PopMatrix();
+	}
+	else if (InstructionSelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 120, 220);
+		modelStack.PopMatrix();
+	}
+	else if (HighscoreSelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 180, 160);
+		modelStack.PopMatrix();
+	}
+	else if (OptionSelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 210, 110);
+		modelStack.PopMatrix();
+	}
+	else if (ExitSelect)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(meshList[GEO_SELECT], false, 1.5, 260, 50);
+		modelStack.PopMatrix();
+	}
+}
+
+void CSceneManager2D::RenderHighscore()
+{
+	modelStack.PushMatrix();
+	Render2DMesh(meshList[GEO_HIGHSCORE], false);
+
+	std::ostringstream ss;
+	const int size = 5;
+	for (int i = 0; i < size; i++)
+	{
+		ss.str(std::string());
+		ss << i + 1 << ". " << theScore[i].GetAllHighscores(i);
+		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 0, 1), 60, 300, 300 - (i * 40));
+	}
+	modelStack.PopMatrix();
+}
+
+void CSceneManager2D::RenderOption()
+{
+	modelStack.PushMatrix();
+	Render2DMesh(meshList[GEO_OPTION1], false);
+	modelStack.PopMatrix();
+}
+
+void CSceneManager2D::RenderInstructions()
+{
+	modelStack.PushMatrix();
+	Render2DMesh(meshList[GEO_INSTRUCTION], false);
+	modelStack.PopMatrix();
 }
 
 /********************************************************************************
