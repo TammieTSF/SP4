@@ -57,12 +57,12 @@ void GridSystem::Init(Vector3 Pos, float LengthX, float LengthY, int NumOfGridsX
 			if (checkOddGridsY)
 			{
 				int mid = (NumOfGridsY + 1) * 0.5;
-				offsetY = LengthY * (mid - (a + 1));
+				offsetY = LengthY * (mid - a);
 			}
 			else
 			{
 				int mid = NumOfGridsY * 0.5;
-				offsetY = LengthY * (mid - (a + 1)) + LengthY * 0.5;
+				offsetY = LengthY * (mid - a) + LengthY * 0.5;
 			}
 			y = this->Pos.y - offsetY;
 
@@ -70,13 +70,26 @@ void GridSystem::Init(Vector3 Pos, float LengthX, float LengthY, int NumOfGridsX
 			Grid* PlayGrid = new Grid();
 			PlayGrid->SetPos(x, y);
 			GridsVec.push_back(PlayGrid);
-			//std:: cout << "Added a grid" << std::endl;
+			std:: cout << x << ", " << y << std::endl;
 		}
 	}
 	
 }
-void GridSystem::Update(Vector3)
+void GridSystem::UpdateGrid(Vector3 CursorPos)
 {
+	for (int a = 0; a < GridsVec.size(); a++)
+	{
+		Vector3 GridPos = GridsVec[a]->GetPos();
+		// detection is due to reference point being at the bottom left
+		if (GridPos.x < CursorPos.x && CursorPos.x < GridPos.x + LengthOfGridsX)
+		{
+			if (GridPos.y < CursorPos.y && CursorPos.y < GridPos.y + LengthOfGridsY)
+			{
+				GridsVec[a]->ChangeType();
+			//	std::cout << GridsVec[a]->GetPos() << std::endl;
+			}
+		}
+	}
 }
 
 void GridSystem::SetAnswer()
