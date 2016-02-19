@@ -16,8 +16,13 @@ public:
 	}
 
 	static bool IsKeyPressed(unsigned short key);
+	static void GetMousePos(double&, double&);
 	bool GetMouseUpdate();
 	bool GetKeyboardUpdate();
+	/*static void GetWindowWidth(int&);
+	static void GetWindowHeight(int&);*/
+	
+	
 
 	void Init();
 	void Run();
