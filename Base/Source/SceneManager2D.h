@@ -21,6 +21,10 @@
 #include "Goodies.h"
 #include "TreasureChest.h"
 
+//grid system and grid class
+#include "GridSystem.h"
+
+
 class CSceneManager2D : public Scene
 {
 	enum UNIFORM_TYPE
@@ -65,8 +69,8 @@ public:
 	virtual void Update(double dt);
 	// Update Camera status
 	virtual void UpdateCameraStatus(const unsigned char key, const bool status = true);
-	// Update Weapon status
-	virtual void UpdateWeaponStatus(const unsigned char key);
+	// Update mouse status
+	virtual void UpdateMouseStatus(const unsigned char key);
 	virtual void Render();
 	virtual void Exit();
 
@@ -74,9 +78,12 @@ public:
 	void RenderBackground();
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const int size=1, const int x=0, const int y=0, const bool rotate=false, const bool flip=false);
 
+	void RenderGridSystem();
+
 	enum WEAPON_ACTION
 	{
 		WA_NIL = 0,
+		WA_LEFT_CLICKED,
 		WA_FIRE,
 		WA_RELOAD,
 		WA_CHANGEWEAPON,
@@ -104,6 +111,16 @@ private:
 
 
 	float fps;
+
+	//grid system and grids
+	GridSystem* Playfield;
+
+	//world height and width
+	float m_worldHeight;
+	float m_worldWidth;
+	//window height and width
+	int m_windowHeight;
+	int m_windowWidth;
 	/*
 	// Handle to the minimap
 	CMinimap* m_cMinimap;
