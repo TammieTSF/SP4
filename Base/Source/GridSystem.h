@@ -14,7 +14,7 @@ public:
 	//initialise various needed variables
 	void Init(Vector3 Pos, float LengthX, float LengthY, int NumOfGridsX, int NumOfGridsY);
 	//update the grid system 
-	void Update(Vector3);
+	void UpdateGrid(Vector3);
 
 	// set correct answer
 	void SetAnswer();

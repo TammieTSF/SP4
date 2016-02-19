@@ -46,6 +46,12 @@ CSceneManager2D::~CSceneManager2D()
 	}
 
 
+	if (Playfield)
+	{
+		delete Playfield;
+		Playfield = NULL;
+	}
+
 	/*
 	if (m_spriteAnimation)
 	{
@@ -218,7 +224,7 @@ void CSceneManager2D::Init()
 	//initailise grid system
 	Playfield = new GridSystem();
 	// in this order: position of the whole grid system, size of grid x, size of grid y, number of grid x, number of grid y 
-	Playfield->Init(Vector3(400, 300, 0), 25.f, 25.f, 15, 15);
+	Playfield->Init(Vector3(400, 300, 0), 25.f, 25.f, 5, 5);
 
 	
 }
@@ -297,11 +303,15 @@ void CSceneManager2D::UpdateCameraStatus(const unsigned char key, const bool sta
 /********************************************************************************
  Update Weapon status
  ********************************************************************************/
-void CSceneManager2D::UpdateWeaponStatus(const unsigned char key)
+void CSceneManager2D::UpdateMouseStatus(const unsigned char key)
 {
-	if (key == WA_FIRE)
+	if (key == WA_LEFT_CLICKED)
 	{
-		// Add a bullet object which starts at the camera position and moves in the camera's direction
+		//get cursor position
+		double x, y;
+		Application::GetMousePos(x, y);
+		Playfield->UpdateGrid(Vector3(x, y, 0));
+		cout << x << ", " << y << endl;
 	}
 }
 
@@ -407,8 +417,13 @@ void CSceneManager2D::RenderGridSystem()
 		modelStack.PushMatrix();
 		//get position of a grid in the vector 
 		Vector3 GridPos = Playfield->GetGridsVec()[a]->GetPos();
-
+		if (Playfield->GetGridsVec()[a] ->GetType() == Grid::GridType::EMPTY)
 		Render2DMesh(meshList[GEO_TILESTRUCTURE], false, 1, GridPos.x, GridPos.y);
+		else if (Playfield->GetGridsVec()[a]->GetType() == Grid::GridType::CROSS)
+		Render2DMesh(meshList[GEO_TILEGROUND], false, 1, GridPos.x, GridPos.y);
+		else if (Playfield->GetGridsVec()[a]->GetType() == Grid::GridType::FILLED)
+		Render2DMesh(meshList[GEO_TILEHERO], false, 1, GridPos.x, GridPos.y);
+		
 		//cout << "rendered at" << Playfield->GetGridsVec()[a]->GetPos().x << ", " << Playfield->GetGridsVec()[a]->GetPos().y << endl;
 		modelStack.PopMatrix();
 	}
