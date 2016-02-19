@@ -20,10 +20,14 @@
     <ClCompile Include="Source\GoodiesFactory.cpp" />
     <ClCompile Include="Source\Grid.cpp" />
     <ClCompile Include="Source\GridSystem.cpp" />
+<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
     <ClCompile Include="Source\Highscore.cpp" />
     <ClCompile Include="Source\HighscoreData.cpp" />
     <ClCompile Include="Source\HighscoreState.cpp" />
     <ClCompile Include="Source\InstructionState.cpp" />
+=======
+    <ClCompile Include="Source\IntroState.cpp" />
+>>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\LuaUsage.cpp" />
@@ -33,7 +37,11 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Minimap.cpp" />
+<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
     <ClCompile Include="Source\OptionState.cpp" />
+=======
+    <ClCompile Include="Source\Particle.cpp" />
+>>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayerInfo.cpp" />
     <ClCompile Include="Source\PlayInfo3PV.cpp" />
@@ -59,10 +67,14 @@
     <ClInclude Include="Source\GoodiesFactory.h" />
     <ClInclude Include="Source\Grid.h" />
     <ClInclude Include="Source\GridSystem.h" />
+<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
     <ClInclude Include="Source\Highscore.h" />
     <ClInclude Include="Source\HighscoreData.h" />
     <ClInclude Include="Source\HighscoreState.h" />
     <ClInclude Include="Source\InstructionState.h" />
+=======
+    <ClInclude Include="Source\IntroState.h" />
+>>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
@@ -74,7 +86,11 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Minimap.h" />
+<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
     <ClInclude Include="Source\OptionState.h" />
+=======
+    <ClInclude Include="Source\Particle.h" />
+>>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\PlayerInfo.h" />
     <ClInclude Include="Source\PlayInfo3PV.h" />

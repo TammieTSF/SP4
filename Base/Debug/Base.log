@@ -1,3 +1,4 @@
+<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
 ﻿Build started 2/19/2016 2:01:02 PM.
      1>Project "C:\Users\Tammie\Desktop\SP4\Base\Base.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
@@ -145,3 +146,10 @@
 Build succeeded.
 
 Time Elapsed 00:00:21.25
+=======
+﻿Build started 19/2/2016 9:09:48 PM.
+
+Build succeeded.
+
+Time Elapsed 00:00:00.12
+>>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e

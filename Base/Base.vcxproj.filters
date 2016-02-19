@@ -105,6 +105,7 @@
     <ClCompile Include="Source\SpriteAnimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
     <ClCompile Include="Source\Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -124,6 +125,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\HighscoreData.cpp">
+=======
+    <ClCompile Include="Source\Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GridSystem.cpp">
+>>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -230,6 +240,7 @@
     <ClInclude Include="Source\SpriteAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
     <ClInclude Include="Source\Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -249,6 +260,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\HighscoreData.h">
+=======
+    <ClInclude Include="Source\Particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GridSystem.h">
+>>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
