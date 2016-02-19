@@ -29,7 +29,6 @@ double Application::mouse_last_x = 0.0, Application::mouse_last_y = 0.0,
 	   Application::mouse_current_x = 0.0, Application::mouse_current_y = 0.0,
 	   Application::mouse_diff_x = 0.0, Application::mouse_diff_y = 0.0;
 double Application::camera_yaw = 0.0, Application::camera_pitch = 0.0;
-int WindowHeight, WindowWidth;
 
 /********************************************************************************
  Define an error callback
@@ -66,22 +65,10 @@ bool Application::IsKeyPressed(unsigned short key)
 }
 
 /********************************************************************************
-Get mouse position
-********************************************************************************/
-void Application::GetMousePos(double& x, double& y)
-{
-	glfwGetCursorPos(m_window, &x, &y);
-	y = (WindowHeight - y);
-	/*x = x / WindowWidth;
-	 / WindowHeight;*/
-}
-
-/********************************************************************************
  Get mouse updates
  ********************************************************************************/
 bool Application::GetMouseUpdate()
 {
-	
     glfwGetCursorPos(m_window, &mouse_current_x, &mouse_current_y);
 
 	// Calculate the difference in positions
@@ -93,7 +80,7 @@ bool Application::GetMouseUpdate()
 	camera_pitch = mouse_diff_y * 0.0174555555555556f;// 3.142f / 180.0f );
 
 	// Do a wraparound if the mouse cursor has gone out of the deadzone
-	/*if ((mouse_current_x < m_window_deadzone) || (mouse_current_x > m_window_width-m_window_deadzone))
+	if ((mouse_current_x < m_window_deadzone) || (mouse_current_x > m_window_width-m_window_deadzone))
 	{
 		mouse_current_x = m_window_width >> 1;
 		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
@@ -102,7 +89,7 @@ bool Application::GetMouseUpdate()
 	{
 		mouse_current_y = m_window_height >> 1;
 		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
-	}*/
+	}
 
 	// Store the current position as the last position
 	mouse_last_x = mouse_current_x;
@@ -112,8 +99,6 @@ bool Application::GetMouseUpdate()
 	Button_Left   = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT);
 	Button_Middle = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_MIDDLE);
 	Button_Right  = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT);;
-
-
 
 	// Update the GSM
 	theGSM->HandleEvents( mouse_current_x, mouse_current_x, Button_Left, Button_Middle, Button_Right);
@@ -258,9 +243,6 @@ void Application::Init()
 	m_window_width = theAppLua->GetIntegerValue("SCREENWIDTH");
 	theAppLua->LuaUsageClose();
 
-
-	WindowHeight = m_window_height;
-	WindowWidth = m_window_width;
 	//Create a window and create its OpenGL context
 	m_window = glfwCreateWindow(m_window_width, m_window_height, "Y2S2_Framework", NULL, NULL);
 
@@ -291,7 +273,7 @@ void Application::Init()
 	}
 
 	// Hide the cursor
-	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	// Set these 2 variables to zero
 	m_dElapsedTime = 0.0;
@@ -359,4 +341,3 @@ void Application::Exit()
 
 	//std::cout << _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 }
-
