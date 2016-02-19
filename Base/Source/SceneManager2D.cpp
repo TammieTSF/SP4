@@ -13,8 +13,11 @@ CSceneManager2D::CSceneManager2D()
 : m_player(NULL)
 , m_save(NULL)
 , m_spriteAnimation(NULL)
+, m_particle(NULL)
+, m_particle2(NULL)
 , Playfield(NULL)
 , tempsound(0.5)
+, m_SpriteAnimationLoad(NULL)
 /*
 : m_cMinimap(NULL)
 , m_cMap(NULL)
@@ -52,6 +55,11 @@ CSceneManager2D::~CSceneManager2D()
 		m_save = NULL;
 	}
 
+	if (Playfield)
+	{
+		delete Playfield;
+		Playfield = NULL;
+	}
 
 	if (Playfield)
 	{
@@ -59,6 +67,11 @@ CSceneManager2D::~CSceneManager2D()
 		Playfield = NULL;
 	}
 
+	if (m_SpriteAnimationLoad)
+	{
+		delete m_SpriteAnimationLoad;
+		m_SpriteAnimationLoad = NULL;
+	}
 	/*
 	if (m_spriteAnimation)
 	{
@@ -194,11 +207,30 @@ void CSceneManager2D::Init()
 	meshList[GEO_SPRITE_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("cat", 1, 6);
 	meshList[GEO_SPRITE_ANIMATION]->textureID = LoadTGA("Image//cat.tga");
 	m_spriteAnimation = dynamic_cast<SpriteAnimation*>(meshList[GEO_SPRITE_ANIMATION]);
-	if (m_spriteAnimation)
+	m_SpriteAnimationLoad = new LuaUsage();
+	m_SpriteAnimationLoad->LuaUsageInit("Lua/Sprite.lua");
+	confettiRightside = false;
+	m_WindowHeight = 600;
+	m_WindowWidth = 800;
+	m_particle = new Particle();
+	m_particle2 = new Particle();
+
+	SetParticleStyle(m_particle, PARTICLE_STYLE::DROPDOWN);
+	SetParticleStyle(m_particle2, PARTICLE_STYLE::DROPDOWN);
+	//SetParticleStyle(m_particle, PARTICLE_STYLE::CONFETTI);
+	//SetParticleStyle(m_particle2, PARTICLE_STYLE::CONFETTI);
+	
+	Math::InitRNG();
+	for (int i = 0; i < m_particle->GetSize(); i++)
 	{
-		m_spriteAnimation->m_anim = new Animation();
-		m_spriteAnimation->m_anim->Set(0, 5, 0, 0.1f);
+		SetSpriteAnimation(m_particle, i);
 	}
+	
+	for (int i = 0; i < m_particle2->GetSize(); i++)
+	{
+		SetSpriteAnimation(m_particle2,i);
+	}
+	m_SpriteAnimationLoad->LuaUsageClose();
 	/*
 	// Initialise and load the tile map
 	m_cMap = new CMap();
@@ -246,7 +278,7 @@ void CSceneManager2D::Init()
 	rotateAngle = 0;
 	m_save = new Save();
 	m_player = new Player();
-	m_player->PlayerInit("Player.lua");
+	m_player->PlayerInit("Lua/Player.lua");
 
 	//initailise grid system
 	Playfield = new GridSystem();
@@ -265,7 +297,70 @@ void CSceneManager2D::AddHighscore()
 		theScore[i].ReadTextFile("highscore.txt");
 	}
 }
+void CSceneManager2D::SetParticleStyle(Particle *ParticleVector, int ParticleStyle)
+{
 
+	if (ParticleStyle == PARTICLE_STYLE::DROPDOWN)
+		ParticleVector->ParticleInit(20, 0, m_WindowHeight, PARTICLE_STYLE::DROPDOWN);
+	else if (ParticleStyle == PARTICLE_STYLE::CONFETTI && confettiRightside == false)
+	{
+		ParticleVector->ParticleInit(20, m_WindowWidth * 0.125, m_WindowHeight* 0.5, PARTICLE_STYLE::CONFETTI);
+		confettiRightside = true;
+	}
+	else if (ParticleStyle == PARTICLE_STYLE::CONFETTI && confettiRightside)
+	{
+		ParticleVector->ParticleInit(20, m_WindowWidth * 0.875, m_WindowHeight* 0.5, PARTICLE_STYLE::CONFETTI);
+		ParticleVector->SetConfettiRightSide(confettiRightside);
+	}
+		
+}
+
+void CSceneManager2D::SetSpriteAnimation(Particle *ParticleVector, int SAIndex)
+{
+	/*meshList[GEO_SPRITE_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("star", 6, 3);
+	meshList[GEO_SPRITE_ANIMATION]->textureID = LoadTGA("Image//StarSprite.tga");
+	m_spriteAnimation = dynamic_cast<SpriteAnimation*>(meshList[GEO_SPRITE_ANIMATION]);
+	m_spriteAnimation->m_anim = new Animation();
+	if (m_spriteAnimation)
+	{
+		Math::InitRNG();
+		m_spriteAnimation->m_anim->Set(0, 16, 0, 0.5f);
+		//m_spriteAnimation->x = Math::RandIntMinMax(100,700);//64;
+		//	m_spriteAnimation->y = 600 + Math::RandIntMinMax(100, 200);
+
+		m_spriteAnimation->x = m_particle->GetX();
+		m_spriteAnimation->y = m_particle->GetY();
+
+		m_spriteAnimation->speed = Math::RandIntMinMax(100, 800);
+		m_spriteAnimation->index = i;
+		m_particle->SpritePushBack(m_spriteAnimation, /*0*///m_spriteAnimation->y + Math::RandIntMinMax(-600, 300), 400/*0*/);
+		/*m_particle->SpritePushBack(m_spriteAnimation, 0, 0, i);*/
+	//}
+	meshList[GEO_SPRITE_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("star", m_SpriteAnimationLoad->GetIntegerValue("StarRow"), m_SpriteAnimationLoad->GetIntegerValue("StarCol"));
+	meshList[GEO_SPRITE_ANIMATION]->textureID = LoadTGA("Image//StarSprite.tga");
+	m_spriteAnimation = dynamic_cast<SpriteAnimation*>(meshList[GEO_SPRITE_ANIMATION]);
+	m_spriteAnimation->m_anim = new Animation();
+	if (m_spriteAnimation)
+	{
+		m_spriteAnimation->m_anim->Set(0, 18, 0, Math::RandFloatMinMax( (m_SpriteAnimationLoad->GetFloatValue("StarMinTime")) , (m_SpriteAnimationLoad->GetFloatValue("StarMaxTime")) ));
+		if (ParticleVector->Getparticlestyle() == PARTICLE_STYLE::DROPDOWN)
+		{
+			m_spriteAnimation->x = m_spriteAnimation->x + Math::RandIntMinMax(m_WindowWidth*0.125, m_WindowWidth - m_WindowWidth*0.125);//64;
+			m_spriteAnimation->y = ParticleVector->GetY() + Math::RandIntMinMax(m_WindowWidth*0.125, m_WindowWidth*0.25);
+			m_spriteAnimation->speed = Math::RandIntMinMax(m_WindowWidth*0.125, m_WindowWidth);
+			m_spriteAnimation->index = SAIndex;
+			ParticleVector->SpritePushBack(m_spriteAnimation, 0,0);
+		}
+		else if (ParticleVector->Getparticlestyle() == PARTICLE_STYLE::CONFETTI)
+		{
+			m_spriteAnimation->x = ParticleVector->GetX();
+			m_spriteAnimation->y = ParticleVector->GetY();
+			m_spriteAnimation->speed = Math::RandIntMinMax(m_WindowWidth*0.125, m_WindowWidth);
+			m_spriteAnimation->index = SAIndex;
+			ParticleVector->SpritePushBack(m_spriteAnimation, m_spriteAnimation->y + Math::RandIntMinMax(0, m_WindowWidth*0.125+ m_WindowWidth*0.25), m_WindowWidth*0.5);
+		}
+	}
+}
 void CSceneManager2D::Update(double dt)
 {
 	//cout << m_player->GetAmtOfClearedLevelEasy() << " " << m_player->GetAmtOfClearedLevelNormal() << " " << m_player->GetAmtOfClearedLevelHard();
@@ -283,7 +378,9 @@ void CSceneManager2D::Update(double dt)
 	cout << Sound.volume << endl;
 
 	camera.Update(dt);
-	m_spriteAnimation->Update(dt);
+	//m_spriteAnimation->Update(dt);
+	m_particle->Update(dt);
+	m_particle2->Update(dt);
 	/*
 
 	// Update the hero
@@ -491,9 +588,17 @@ void CSceneManager2D::Render()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack.LoadIdentity();
 
+	for (int i = 0; i < m_particle->GetSize(); i++)
+	{
+		modelStack.PushMatrix();
+		Render2DMesh(m_particle->theSpriteHolder[i], false, 50, m_particle->theSpriteHolder[i]->x, m_particle->theSpriteHolder[i]->y);
+		Render2DMesh(m_particle2->theSpriteHolder[i], false, 50, m_particle2->theSpriteHolder[i]->x, m_particle2->theSpriteHolder[i]->y);
+		modelStack.PopMatrix();
+	}
+	/*
 	modelStack.PushMatrix();
 	Render2DMesh(meshList[GEO_SPRITE_ANIMATION], false,50,400,300);
-	modelStack.PopMatrix();
+	modelStack.PopMatrix();*/
 	/*
 	// Render the background image
 	RenderBackground();
@@ -519,7 +624,7 @@ void CSceneManager2D::Render()
 	sss << "mapOffset_x: "<<theHero->GetMapOffset_x();
 	RenderTextOnScreen(meshList[GEO_TEXT], sss.str(), Color(0, 1, 0), 30, 0, 30);
 	*/
-
+	
 	std::ostringstream ss;
 	ss.precision(5);
 	ss << "test text: " << " 9999999 ";
@@ -606,15 +711,29 @@ void CSceneManager2D::RenderInstructions()
 void CSceneManager2D::Exit()
 {
 	m_save->SavePlayer(m_player);
+	if (m_particle)
+	{
+		delete m_particle;
+		m_particle = NULL;
+	}
+	if (m_particle2)
+	{
+		delete m_particle2;
+		m_particle2 = NULL;
+	}
+
+
+	/*
 	if (m_spriteAnimation)
 	{
 		delete m_spriteAnimation->m_anim;
 		m_spriteAnimation->m_anim = NULL;
-	}
+	}*/
 	// Cleanup VBO
 	for(int i = 0; i < NUM_GEOMETRY; ++i)
 	{
-		if(meshList[i])
+
+		if (meshList[i] && i != GEO_SPRITE_ANIMATION)
 			delete meshList[i];
 	}
 	glDeleteProgram(m_programID);

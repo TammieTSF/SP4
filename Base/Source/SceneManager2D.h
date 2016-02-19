@@ -19,6 +19,8 @@
 
 #include "Highscore.h"
 #include "HighscoreData.h"
+#include "Particle.h"
+#include "LuaUsage.h"
 
 // Goodies and Goodies Factory
 #include "GoodiesFactory.h"
@@ -75,7 +77,12 @@ class CSceneManager2D : public Scene
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
-
+	enum PARTICLE_STYLE
+	{
+		DROPDOWN = 0,
+		CONFETTI,
+		NUM_PARTICLE_STYLE
+	};
 public:
 	CSceneManager2D();
 	CSceneManager2D(const int m_window_width, const int m_window_height);
@@ -89,6 +96,9 @@ public:
 	virtual void UpdateMouseStatus(const unsigned char key);
 	virtual void Render();
 	virtual void Exit();
+
+	void SetSpriteAnimation(Particle *ParticleVector, int SAIndex);
+	void SetParticleStyle(Particle *ParticleVector, int ParticleStyle);
 
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderBackground();
@@ -129,10 +139,12 @@ public:
 	};
 
 private:
+	LuaUsage* m_SpriteAnimationLoad;
 	Player* m_player;
 	Save* m_save;
 	SpriteAnimation *m_spriteAnimation;
-
+	Particle *m_particle;
+	Particle *m_particle2;
 
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -147,7 +159,9 @@ private:
 	MS viewStack;
 	MS projectionStack;
 
-
+	bool confettiRightside;
+	int m_WindowHeight;
+	int m_WindowWidth;
 	float fps;
 
 	//grid system and grids
