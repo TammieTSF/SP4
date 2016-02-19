@@ -14,6 +14,7 @@ CSceneManager2D::CSceneManager2D()
 , m_save(NULL)
 , m_spriteAnimation(NULL)
 , Playfield(NULL)
+, tempsound(0.5)
 /*
 : m_cMinimap(NULL)
 , m_cMap(NULL)
@@ -174,8 +175,14 @@ void CSceneManager2D::Init()
 	meshList[GEO_MENU]->textureID = LoadTGA("Image//MainMenu.tga");
 	meshList[GEO_HIGHSCORE] = MeshBuilder::Generate2DMesh("GEO_HIGHSCORE", Color(1, 1, 1), 0, 0, 800, 600);
 	meshList[GEO_HIGHSCORE]->textureID = LoadTGA("Image//Highscore.tga");
-	meshList[GEO_OPTION1] = MeshBuilder::Generate2DMesh("GEO_OPTION1", Color(1, 1, 1), 0, 0, 800, 600);
-	meshList[GEO_OPTION1]->textureID = LoadTGA("Image//OptionsSoundOn.tga");
+	meshList[GEO_VOL_MUTE] = MeshBuilder::Generate2DMesh("GEO_VOL_MUTE", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_VOL_MUTE]->textureID = LoadTGA("Image//OptionsVolumeSoundOff.tga");
+	meshList[GEO_VOL] = MeshBuilder::Generate2DMesh("GEO_VOL", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_VOL]->textureID = LoadTGA("Image//OptionsVolumeSoundOn.tga");
+	meshList[GEO_SOUND_MUTE] = MeshBuilder::Generate2DMesh("GEO_SOUND_MUTE", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_SOUND_MUTE]->textureID = LoadTGA("Image//OptionsSoundOff.tga");
+	meshList[GEO_SOUND] = MeshBuilder::Generate2DMesh("GEO_SOUND", Color(1, 1, 1), 0, 0, 800, 600);
+	meshList[GEO_SOUND]->textureID = LoadTGA("Image//OptionsSoundOn.tga");
 	meshList[GEO_INSTRUCTION] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTIONS", Color(1, 1, 1), 0, 0, 800, 600);
 	meshList[GEO_INSTRUCTION]->textureID = LoadTGA("Image//Instructions.tga");
 
@@ -272,6 +279,8 @@ void CSceneManager2D::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
 	rotateAngle -= (float)Application::camera_yaw;// += (float)(10 * dt);
+
+	cout << Sound.volume << endl;
 
 	camera.Update(dt);
 	m_spriteAnimation->Update(dt);
@@ -575,7 +584,12 @@ void CSceneManager2D::RenderHighscore()
 void CSceneManager2D::RenderOption()
 {
 	modelStack.PushMatrix();
-	Render2DMesh(meshList[GEO_OPTION1], false);
+	Render2DMesh(meshList[GEO_SOUND], false);
+
+	std::ostringstream ssVol;
+	ssVol << tempsound;
+	RenderTextOnScreen(meshList[GEO_TEXT], ssVol.str(), Color(0, 1, 0), 30, 300, 300);
+
 	modelStack.PopMatrix();
 }
 

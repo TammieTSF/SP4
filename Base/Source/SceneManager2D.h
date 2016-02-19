@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "Save.h"
 #include "SpriteAnimation.h"
+#include "SoundManager.h"
 
 #include "Highscore.h"
 #include "HighscoreData.h"
@@ -66,10 +67,10 @@ class CSceneManager2D : public Scene
 		GEO_INSTRUCTION,
 		GEO_HIGHSCORE,
 		// TEMPO NAME
-		GEO_OPTION1,
-		GEO_OPTION2,
-		GEO_OPTION3,
-		GEO_OPTION4,
+		GEO_VOL_MUTE,
+		GEO_VOL,
+		GEO_SOUND_MUTE,
+		GEO_SOUND,
 
 		GEO_TEXT,
 		NUM_GEOMETRY,
@@ -106,8 +107,16 @@ public:
 	bool OptionSelect;
 	bool ExitSelect;
 
+	// Option States
+	bool SoundSelect;
+	bool VolumeSelect;
+	bool mute;
+
 	void AddHighscore();
 	HighscoreData theScore[5];
+	CSoundManager Sound;
+
+	float tempsound;
 
 	enum WEAPON_ACTION
 	{

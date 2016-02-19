@@ -2,6 +2,7 @@
 
 #include "gamestate.h"
 #include "application.h"
+#include "SoundManager.h"
 
 class COptionState : public CGameState
 {
@@ -25,10 +26,13 @@ public:
 		return &theOptionState;
 	}
 
+	CSoundManager Sound;
+
 protected:
 	COptionState() { }
 
 private:
 	static COptionState theOptionState;
 	CSceneManager2D* theScene;
+	int Select;
 };

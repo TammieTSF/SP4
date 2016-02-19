@@ -2,6 +2,7 @@
 
 #include "gamestate.h"
 #include "application.h"
+#include "SoundManager.h"
 
 class CMenuState : public CGameState
 {
@@ -24,6 +25,8 @@ public:
 	static CMenuState* Instance() {
 		return &theMenuState;
 	}
+
+	CSoundManager Sound;
 
 protected:
 	CMenuState() { }
