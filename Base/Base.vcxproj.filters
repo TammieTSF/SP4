@@ -105,7 +105,6 @@
     <ClCompile Include="Source\SpriteAnimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
     <ClCompile Include="Source\Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -121,19 +120,22 @@
     <ClCompile Include="Source\OptionState.cpp">
       <Filter>Game State Management</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Highscore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\HighscoreData.cpp">
-=======
     <ClCompile Include="Source\Particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Grid.cpp">
+    <ClCompile Include="Source\SoundManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GridSystem.cpp">
->>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e
+    <ClCompile Include="Source\PathFinding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HighscoreData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneManager2DforScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Highscore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -231,16 +233,9 @@
     <ClInclude Include="Source\LuaUsage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Save.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SpriteAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< 8472275cde1bb8d9f51fdf7d570bfe4bbf8c39e8
     <ClInclude Include="Source\Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -256,19 +251,28 @@
     <ClInclude Include="Source\OptionState.h">
       <Filter>Game State Management</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Highscore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\HighscoreData.h">
-=======
     <ClInclude Include="Source\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Grid.h">
+    <ClInclude Include="Source\HighscoreData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GridSystem.h">
->>>>>>> aa10780caeb18f63f77e530ea66799623a4f622e
+    <ClInclude Include="Source\PathFinding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Save.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneManager2DforScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Highscore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
