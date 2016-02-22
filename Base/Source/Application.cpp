@@ -130,6 +130,11 @@ bool Application::GetMouseUpdate()
  ********************************************************************************/
 bool Application::GetKeyboardUpdate()
 {
+	if (IsKeyPressed(VK_ESCAPE))
+	{
+		theGSM->Quit();
+	}
+
 	if (IsKeyPressed('A'))
 	{
 		theGSM->HandleEvents('a');
@@ -301,7 +306,7 @@ void Application::Init()
 	// Initialise the GSM
 	theGSM = new CGameStateManager();
 	theGSM->Init("DM2240 with Game State Management", m_window_width, m_window_height);
-	theGSM->ChangeState( CPlayState::Instance() );
+	theGSM->ChangeState(CMenuState::Instance());
 }
 
 /********************************************************************************
@@ -310,7 +315,7 @@ void Application::Init()
 void Application::Run()
 {
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
+	while (theGSM->Running() && !glfwWindowShouldClose(m_window))
 	{
 		// Get the elapsed time
 		m_dElapsedTime = m_timer.getElapsedTime();

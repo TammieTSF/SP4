@@ -15,6 +15,10 @@
 #include "Player.h"
 #include "Save.h"
 #include "SpriteAnimation.h"
+#include "SoundManager.h"
+
+#include "Highscore.h"
+#include "HighscoreData.h"
 
 // Goodies and Goodies Factory
 #include "GoodiesFactory.h"
@@ -57,12 +61,24 @@ class CSceneManager2D : public Scene
 		GEO_TILE_TREASURECHEST,
 		GEO_SPRITE_ANIMATION,
 		GEO_OBJECT,
+
+		GEO_MENU,
+		GEO_SELECT,
+		GEO_INSTRUCTION,
+		GEO_HIGHSCORE,
+		// TEMPO NAME
+		GEO_VOL_MUTE,
+		GEO_VOL,
+		GEO_SOUND_MUTE,
+		GEO_SOUND,
+
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
 
 public:
 	CSceneManager2D();
+	CSceneManager2D(const int m_window_width, const int m_window_height);
 	~CSceneManager2D();
 
 	virtual void Init();
@@ -76,9 +92,31 @@ public:
 
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderBackground();
+	void RenderMainMenu();
+	void RenderHighscore();
+	void RenderInstructions();
+	void RenderOption();
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const int size=1, const int x=0, const int y=0, const bool rotate=false, const bool flip=false);
 
 	void RenderGridSystem();
+
+	// Menu States
+	bool PlaySelect;
+	bool InstructionSelect;
+	bool HighscoreSelect;
+	bool OptionSelect;
+	bool ExitSelect;
+
+	// Option States
+	bool SoundSelect;
+	bool VolumeSelect;
+	bool mute;
+
+	void AddHighscore();
+	HighscoreData theScore[5];
+	CSoundManager Sound;
+
+	float tempsound;
 
 	enum WEAPON_ACTION
 	{
