@@ -118,7 +118,7 @@ public:
 	// Option States
 	bool SoundSelect;
 	bool VolumeSelect;
-	bool mute;
+	bool muted;
 
 	void AddHighscore();
 	HighscoreData theScore[5];

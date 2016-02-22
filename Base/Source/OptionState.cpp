@@ -55,11 +55,6 @@ void COptionState::Update(CGameStateManager* theGSM)
 
 void COptionState::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 {
-	if (Application::IsKeyPressed(VK_BACK))
-	{
-		theGSM->ChangeState(CMenuState::Instance());
-	}
-
 	if (Application::IsKeyPressed(VK_DOWN))
 	{
 		if (Select < 2) // Max. Number of Options
@@ -83,24 +78,29 @@ void COptionState::Update(CGameStateManager* theGSM, const double m_dElapsedTime
 	{
 		theScene->SoundSelect = true;
 		theScene->VolumeSelect = false;
+		Sound.muteSound();
 	}
 	else if (Select == 2) // Volume
 	{
 		theScene->SoundSelect = false;
 		theScene->VolumeSelect = true;
-	}
-
-	
-	if (Select == 1)
-	{
-		
-	}
-	if (Select == 2)
-	{
 		Sound.adjustVol();
 	}
 
 	theScene->tempsound = Sound.volume;
+	if (theScene->tempsound == 0)
+	{
+		theScene->muted = true;
+	}
+	else
+	{
+		theScene->muted = false;
+	}
+
+	if (Application::IsKeyPressed(VK_BACK))
+	{
+		theGSM->ChangeState(CMenuState::Instance());
+	}
 }
 
 void COptionState::Draw(CGameStateManager* theGSM)

@@ -17,7 +17,7 @@ public:
 	~CSoundManager(void);
 
 	void adjustVol();
-	int getVol();
+	void muteSound();
 
 	//Main Menu
 	void mainMenuBGM();

@@ -54,10 +54,33 @@ void CSoundManager::adjustVol()
 	engine->setSoundVolume(volume);
 }
 
-// Get Volume
-int CSoundManager::getVol()
+//Mute Volume
+void CSoundManager::muteSound()
 {
-	return gameVol;
+	static bool pressedLeft = false;
+	if (Application::IsKeyPressed(VK_LEFT) && pressedLeft == false && volume == 0)
+	{
+		volume = 0.1f;
+		pressedLeft = true;
+	}
+	else if (!Application::IsKeyPressed(VK_LEFT) && pressedLeft == true)
+	{
+		pressedLeft = false;
+	}
+
+	static bool pressedRight = false;
+	if (Application::IsKeyPressed(VK_RIGHT) && pressedRight == false)
+	{
+		volume = 0;
+		pressedRight = true;
+	}
+	else if (!Application::IsKeyPressed(VK_RIGHT) && pressedRight == true)
+	{
+		pressedRight = false;
+	}
+
+	cout << "Volume: " << volume << "\n" << endl;
+	engine->setSoundVolume(volume);
 }
 
 // main menu

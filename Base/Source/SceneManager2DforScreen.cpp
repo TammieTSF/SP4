@@ -463,9 +463,26 @@ void SceneManagerLevel2DforScreen::RenderOption()
 	modelStack.PushMatrix();
 	Render2DMesh(meshList[GEO_SOUND], false, false);
 
+	if (SoundSelect && !muted)
+	{
+		Render2DMesh(meshList[GEO_SOUND], false, false);
+	}
+	else if (SoundSelect && muted)
+	{
+		Render2DMesh(meshList[GEO_SOUND_MUTE], false, false);
+	}
+	else if (VolumeSelect && !muted)
+	{
+		Render2DMesh(meshList[GEO_VOL], false, false);
+	}
+	else if (VolumeSelect && muted)
+	{
+		Render2DMesh(meshList[GEO_VOL_MUTE], false, false);
+	}
+	
 	std::ostringstream ssVol;
 	ssVol << tempsound;
-	RenderTextOnScreen(meshList[GEO_TEXT], ssVol.str(), Color(0, 1, 0), 30, 300, 300, false);
+	RenderTextOnScreen(meshList[GEO_TEXT], ssVol.str(), Color(0, 1, 0), 30, 250, 180, false);
 
 	modelStack.PopMatrix();
 }
