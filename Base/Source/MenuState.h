@@ -2,6 +2,8 @@
 
 #include "gamestate.h"
 #include "application.h"
+#include "SoundManager.h"
+#include "SceneManager2DforScreen.h"
 
 class CMenuState : public CGameState
 {
@@ -25,11 +27,13 @@ public:
 		return &theMenuState;
 	}
 
+	CSoundManager Sound;
+
 protected:
 	CMenuState() { }
 
 private:
 	static CMenuState theMenuState;
-	CSceneManager2D* theScene;
+	SceneManagerLevel2DforScreen* theScene;
 	int Select;
 };

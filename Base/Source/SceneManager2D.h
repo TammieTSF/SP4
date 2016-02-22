@@ -15,9 +15,12 @@
 #include "Player.h"
 #include "Save.h"
 #include "SpriteAnimation.h"
+#include "SoundManager.h"
 
 #include "Highscore.h"
 #include "HighscoreData.h"
+#include "Particle.h"
+#include "LuaUsage.h"
 
 // Goodies and Goodies Factory
 #include "GoodiesFactory.h"
@@ -36,10 +39,14 @@ class CSceneManager2D : public Scene
 		U_MODELVIEW,
 		U_MODELVIEW_INVERSE_TRANSPOSE,
 		U_LIGHTENABLED,
+		U_COLOR_TEXTURE0,
+		U_COLOR_TEXTURE_ENABLED0,
 		U_COLOR_TEXTURE_ENABLED,
 		U_COLOR_TEXTURE,
 		U_TEXT_ENABLED,
 		U_TEXT_COLOR,
+		U_TEXT_ALPHA_ENABLED,
+		U_TEXT_ALPHA,
 		U_TOTAL,
 	};
 	enum GEOMETRY_TYPE
@@ -66,15 +73,20 @@ class CSceneManager2D : public Scene
 		GEO_INSTRUCTION,
 		GEO_HIGHSCORE,
 		// TEMPO NAME
-		GEO_OPTION1,
-		GEO_OPTION2,
-		GEO_OPTION3,
-		GEO_OPTION4,
+		GEO_VOL_MUTE,
+		GEO_VOL,
+		GEO_SOUND_MUTE,
+		GEO_SOUND,
 
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
-
+	enum PARTICLE_STYLE
+	{
+		DROPDOWN = 0,
+		CONFETTI,
+		NUM_PARTICLE_STYLE
+	};
 public:
 	CSceneManager2D();
 	CSceneManager2D(const int m_window_width, const int m_window_height);
@@ -89,13 +101,12 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
+	void SetSpriteAnimation(Particle *ParticleVector, int SAIndex);
+	void SetParticleStyle(Particle *ParticleVector, int ParticleStyle);
+
+	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, bool enablealpha = false);
 	void RenderBackground();
-	void RenderMainMenu();
-	void RenderHighscore();
-	void RenderInstructions();
-	void RenderOption();
-	void Render2DMesh(Mesh *mesh, const bool enableLight, const int size=1, const int x=0, const int y=0, const bool rotate=false, const bool flip=false);
+	void Render2DMesh(Mesh *mesh, const bool enableLight, bool enablealpha = false, const int size = 1, const int x = 0, const int y = 0, const bool rotate = false, const bool flip = false);
 
 	void RenderGridSystem();
 
@@ -106,8 +117,16 @@ public:
 	bool OptionSelect;
 	bool ExitSelect;
 
+	// Option States
+	bool SoundSelect;
+	bool VolumeSelect;
+	bool muted;
+
 	void AddHighscore();
 	HighscoreData theScore[5];
+	CSoundManager Sound;
+
+	float tempsound;
 
 	enum WEAPON_ACTION
 	{
@@ -120,10 +139,12 @@ public:
 	};
 
 private:
+	LuaUsage* m_SpriteAnimationLoad;
 	Player* m_player;
 	Save* m_save;
 	SpriteAnimation *m_spriteAnimation;
-
+	Particle *m_particle;
+	Particle *m_particle2;
 
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -138,15 +159,12 @@ private:
 	MS viewStack;
 	MS projectionStack;
 
-
+	bool confettiRightside;
 	float fps;
 
 	//grid system and grids
 	GridSystem* Playfield;
 
-	//world height and width
-	float m_worldHeight;
-	float m_worldWidth;
 	//window height and width
 	int m_windowHeight;
 	int m_windowWidth;

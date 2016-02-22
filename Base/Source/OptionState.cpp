@@ -9,14 +9,17 @@ COptionState COptionState::theOptionState;
 
 void COptionState::Init()
 {
-	theScene = new CSceneManager2D(800, 600);
+	theScene = new SceneManagerLevel2DforScreen(800, 600,Optionscreen);
 	theScene->Init();
 }
 
 void COptionState::Init(const int width, const int height)
 {
-	theScene = new CSceneManager2D(800, 600);
+	theScene = new SceneManagerLevel2DforScreen(width, height, Optionscreen);
 	theScene->Init();
+	Select = 1;
+
+	Sound.mainMenuBGM();
 }
 
 void COptionState::Cleanup()
@@ -52,6 +55,48 @@ void COptionState::Update(CGameStateManager* theGSM)
 
 void COptionState::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 {
+	if (Application::IsKeyPressed(VK_DOWN))
+	{
+		if (Select < 2) // Max. Number of Options
+		{
+			Select++;	// Move the cursor down
+			Sleep(150);
+			cout << Select << endl;
+		}
+	}
+	if (Application::IsKeyPressed(VK_UP))
+	{
+		if (Select >= 1) // Selection is not the first one.
+		{
+			Select--;
+			Sleep(150);
+			cout << Select << endl;
+		}
+	}
+
+	if (Select == 1) // Sound
+	{
+		theScene->SoundSelect = true;
+		theScene->VolumeSelect = false;
+		Sound.muteSound();
+	}
+	else if (Select == 2) // Volume
+	{
+		theScene->SoundSelect = false;
+		theScene->VolumeSelect = true;
+		Sound.adjustVol();
+	}
+
+	theScene->tempsound = Sound.volume;
+	if (theScene->tempsound == 0)
+	{
+		theScene->muted = true;
+	}
+	else
+	{
+		theScene->muted = false;
+	}
+
 	if (Application::IsKeyPressed(VK_BACK))
 	{
 		theGSM->ChangeState(CMenuState::Instance());
@@ -60,5 +105,5 @@ void COptionState::Update(CGameStateManager* theGSM, const double m_dElapsedTime
 
 void COptionState::Draw(CGameStateManager* theGSM)
 {
-	theScene->RenderOption();
+	theScene->Render();
 }
